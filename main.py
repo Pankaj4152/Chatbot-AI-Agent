@@ -1,9 +1,3 @@
-# Requirements:
-# - Python 3.8+
-# - Install packages: pip install langchain-core langgraph>0.2.27
-# - Install langchain with OpenAI support: pip install -qU "langchain[openai]"
-# - Set up API keys for LangSmith and OpenAI
-
 import os
 import getpass
 from langchain.chat_models import init_chat_model
@@ -29,7 +23,32 @@ model = init_chat_model("gpt-4o-mini", model_provider="openai")
 # Define the prompt template with a pirate theme
 prompt_template = ChatPromptTemplate.from_messages(
     [("system", "You talk like a pirate..."), MessagesPlaceholder("history")]
-)
+)   
+
+print("Select the theme you wanna use:")
+print("1. Tech Support")
+print("2. Fitness Coach")
+print("3. Financial Advisor")
+theme = int(input("Enter the number of the theme number you wanna use: "))
+
+while theme not in [1, 2, 3]:
+    print("Invalid theme number. Please enter a valid theme number.")
+    theme = int(input("Enter the number of the theme you wanna use: "))
+
+if theme == 1:
+    prompt_template = ChatPromptTemplate.from_messages(
+        [("system", "You are a technical support assistant. Answer user queries related to software issues in a clear and helpful manner."), MessagesPlaceholder("history")]
+    )
+elif theme == 2:
+    prompt_template = ChatPromptTemplate.from_messages(
+        [("system", "You are a fitness coach. Provide workout routines, diet plans, and motivational advice."), MessagesPlaceholder("history")]
+    )
+elif theme == 3:
+    prompt_template = ChatPromptTemplate.from_messages(
+        [("system", "You are a financial advisor. Provide insights on personal finance, investing, and market trends."), MessagesPlaceholder("history")]
+    )
+
+
 
 # Set up conversation trimming
 trimmer = trim_messages(
